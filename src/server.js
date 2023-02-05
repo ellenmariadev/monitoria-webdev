@@ -1,9 +1,8 @@
 import express from "express";
 import cors from "cors";
+import { PORT } from "./config/database";
 
 const app = express();
-
-const PORT = 5050;
 
 app.use(express.json());
 app.use(cors());
