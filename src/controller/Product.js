@@ -1,5 +1,5 @@
-import Model from "../model/Model";
-import { isUnique } from "../validators/unique";
+import Model from "../model/Model.js";
+import { isUnique } from "../validators/unique.js";
 
 const ProductModel = new Model("product");
 const CategoryModel = new Model("category");
