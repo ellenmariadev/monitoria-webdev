@@ -48,5 +48,8 @@ routes.post(
   authorization("admin:create"),
   ProductController.create,
 );
+routes.get("/products", ProductController.getAll);
+routes.get("/product/:id", ProductController.getById);
+
 
 export default routes;

@@ -42,6 +42,30 @@ class ProductController {
       return res.status(500).send({ error: "Internal server error." });
     }
   }
+
+  async getAll(req, res) {
+    try {
+      const { rows } = await ProductModel.select(
+        "id, description, retail_price, wholesale_price, categories",
+      );
+      return res.status(200).send(rows);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
+
+  async getById(req, res) {
+    try {
+      const { id } = req.params;
+      const products = await ProductModel.selectById(id);
+      if (!products.rows[0]) {
+        return res.status(404).send({ error: "Product not found." });
+      }
+      return res.status(200).send(products.rows);
+    } catch (error) {
+      return res.status(500).send({ error: "Internal server error." });
+    }
+  }
 }
 
 export default new ProductController();
