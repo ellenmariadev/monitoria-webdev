@@ -66,6 +66,38 @@ class ProductController {
       return res.status(500).send({ error: "Internal server error." });
     }
   }
+
+  async alter(req, res) {
+    try {
+      const { id } = req.params;
+      let data = req.body;
+
+      const products = await ProductModel.selectById(id);
+
+      if (!products.rows[0]) {
+        return res.status(404).send({ error: "Product not found." });
+      }
+
+      const categories = await CategoryModel.select("id, name");
+      let categoryObject = categories.rows.map((category) => category);
+
+      const dataCategories = JSON.stringify(data.categories).replace(
+        /[[\]]/g,
+        "",
+      );
+      categoryObject = JSON.stringify(categoryObject).replace(/[[\]]/g, "");
+
+      if (!categoryObject.includes(dataCategories)) {
+        return res.status(404).send({ error: "This category doesn't exist." });
+      }
+
+      data.categories = JSON.stringify(data.categories);
+      const productUpdate = await ProductModel.updateProduct(data, id);
+      return res.status(200).json(productUpdate.rows);
+    } catch (error) {
+      return res.status(500).json({ error: "Internal server error." });
+    }
+  }
 }
 
 export default new ProductController();

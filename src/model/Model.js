@@ -40,6 +40,18 @@ class Model {
     return this.pool.query(query, [data.name, id]);
   }
 
+  async updateProduct(data, id) {
+    const query = `
+        UPDATE ${this.table} SET description = $1, retail_price = $2, wholesale_price = $3, categories = $4 WHERE id = $5 RETURNING *`;
+    return this.pool.query(query, [
+      data.description,
+      data.retail_price,
+      data.wholesale_price,
+      data.categories,
+      id,
+    ]);
+  }
+
   async delete(id) {
     const query = `DELETE FROM ${this.table} WHERE id = $1 RETURNING *`;
     return this.pool.query(query, [id]);

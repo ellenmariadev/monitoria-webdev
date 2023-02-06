@@ -50,6 +50,10 @@ routes.post(
 );
 routes.get("/products", ProductController.getAll);
 routes.get("/product/:id", ProductController.getById);
-
+routes.put(
+  "/product/:id",
+  authorization("admin:update"),
+  ProductController.alter,
+);
 
 export default routes;
