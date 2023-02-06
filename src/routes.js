@@ -30,5 +30,15 @@ routes.post(
 );
 routes.get("/categories", CategoryController.getAll);
 routes.get("/category/:id", CategoryController.getById);
+routes.put(
+  "/category/:id",
+  authorization("admin:update"),
+  CategoryController.alter,
+);
+routes.delete(
+  "/category/:id",
+  authorization("admin:delete"),
+  CategoryController.remove,
+);
 
 export default routes;

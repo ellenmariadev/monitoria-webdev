@@ -28,6 +28,17 @@ class Category {
     const query = `SELECT * FROM ${this.table} WHERE id = $1`;
     return this.pool.query(query, [id]);
   }
+
+  async update(data, id) {
+    const query = `
+        UPDATE ${this.table} SET name = $1 WHERE id = $2 RETURNING *`;
+    return this.pool.query(query, [data.name, id]);
+  }
+
+  async delete(id) {
+    const query = `DELETE FROM ${this.table} WHERE id = $1 RETURNING *`;
+    return this.pool.query(query, [id]);
+  }
 }
 
 export default Category;
