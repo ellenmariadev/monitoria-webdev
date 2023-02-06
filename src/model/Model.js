@@ -1,6 +1,6 @@
 import { pool } from "../config/database.js";
 
-class Category {
+class Model {
   constructor(table) {
     this.pool = pool;
     this.table = table;
@@ -12,10 +12,10 @@ class Category {
 
   async insert(columns, values) {
     const query = `
-        INSERT INTO ${this.table}(${columns})
-        VALUES (${values})
-        RETURNING id, ${columns}
-    `;
+          INSERT INTO ${this.table}(${columns})
+          VALUES (${values})
+          RETURNING id, ${columns}
+      `;
     return this.pool.query(query);
   }
 
@@ -29,7 +29,12 @@ class Category {
     return this.pool.query(query, [id]);
   }
 
-  async update(data, id) {
+  async selectAllIds(...id) {
+    const query = `SELECT * FROM ${this.table} WHERE id = ANY ($1)`;
+    return this.pool.query(query, [...id]);
+  }
+
+  async updateCategory(data, id) {
     const query = `
         UPDATE ${this.table} SET name = $1 WHERE id = $2 RETURNING *`;
     return this.pool.query(query, [data.name, id]);
@@ -41,4 +46,4 @@ class Category {
   }
 }
 
-export default Category;
+export default Model;

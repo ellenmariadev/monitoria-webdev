@@ -1,6 +1,7 @@
-import Category from "../model/Category";
+import Model from "../model/Model";
 import { isUnique } from "../validators/unique";
-const CategoryModel = new Category("category");
+
+const CategoryModel = new Model("category");
 
 class CategoryController {
   async create(req, res) {
@@ -50,9 +51,9 @@ class CategoryController {
     try {
       const { id } = req.params;
       const data = req.body;
-      
+
       const categories = await CategoryModel.selectById(id);
-      
+
       if (!categories.rows[0]) {
         return res.status(404).send({ error: "Category not found." });
       }
@@ -63,7 +64,7 @@ class CategoryController {
           .send({ error: "This category is already registered." });
       }
 
-      const categoryUpdate = await CategoryModel.update(data, id);
+      const categoryUpdate = await CategoryModel.updateCategory(data, id);
       return res.status(200).json(categoryUpdate.rows);
     } catch (error) {
       return res.status(500).json({ error: "Internal server error." });
