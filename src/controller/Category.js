@@ -1,4 +1,5 @@
 import Category from "../model/Category";
+import { isUnique } from "../validators/unique";
 const CategoryModel = new Category("category");
 
 class CategoryController {
@@ -6,6 +7,14 @@ class CategoryController {
     const { name } = req.body;
     const columns = "name";
     const values = `'${name}'`;
+
+    const categories = await CategoryModel.select("id, name");
+
+    if (isUnique(categories, "name", name)) {
+      return res
+        .status(409)
+        .send({ error: "This category is already registered." });
+    }
 
     try {
       const data = await CategoryModel.insert(columns, values);
