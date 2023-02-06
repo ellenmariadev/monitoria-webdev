@@ -14,6 +14,28 @@ class CategoryController {
       return res.status(500).send({ error: "Internal server error." });
     }
   }
+
+  async getAll(req, res) {
+    try {
+      const { rows } = await CategoryModel.select("id, name");
+      return res.status(200).send(rows);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
+
+  async getById(req, res) {
+    try {
+      const { id } = req.params;
+      const categories = await CategoryModel.selectById(id);
+      if (!categories.rows[0]) {
+        return res.status(404).send({ error: "Category not found." });
+      }
+      return res.status(200).send(categories.rows);
+    } catch (error) {
+      return res.status(500).send({ error: "Internal server error." });
+    }
+  }
 }
 
 export default new CategoryController();

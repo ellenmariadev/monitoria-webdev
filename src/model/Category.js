@@ -18,6 +18,16 @@ class Category {
     `;
     return this.pool.query(query);
   }
+
+  async select(columns) {
+    let query = `SELECT ${columns} FROM ${this.table}`;
+    return this.pool.query(query);
+  }
+
+  async selectById(id) {
+    const query = `SELECT * FROM ${this.table} WHERE id = $1`;
+    return this.pool.query(query, [id]);
+  }
 }
 
 export default Category;

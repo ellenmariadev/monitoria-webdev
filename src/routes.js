@@ -28,5 +28,7 @@ routes.post(
   authorization("admin:create"),
   CategoryController.create,
 );
+routes.get("/categories", CategoryController.getAll);
+routes.get("/category/:id", CategoryController.getById);
 
 export default routes;
