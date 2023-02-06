@@ -1,5 +1,6 @@
 import { Router } from "express";
 import CategoryController from "./controller/Category.js";
+import ProductController from "./controller/Product.js";
 import authorization from "./middleware/auth";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -39,6 +40,13 @@ routes.delete(
   "/category/:id",
   authorization("admin:delete"),
   CategoryController.remove,
+);
+
+// products routes
+routes.post(
+  "/product/:category_id",
+  authorization("admin:create"),
+  ProductController.create,
 );
 
 export default routes;
