@@ -42,6 +42,7 @@ routes.delete(
   CategoryController.remove,
 );
 
+
 // products routes
 routes.post(
   "/product/:category_id",
@@ -54,6 +55,11 @@ routes.put(
   "/product/:id",
   authorization("admin:update"),
   ProductController.alter,
+);
+routes.delete(
+  "/product/:id",
+  authorization("admin:delete"),
+  ProductController.remove,
 );
 
 export default routes;
