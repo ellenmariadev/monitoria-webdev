@@ -72,10 +72,20 @@ class ProductController {
       const { id } = req.params;
       let data = req.body;
 
-      const products = await ProductModel.selectById(id);
+      const product = await ProductModel.selectById(id);
 
-      if (!products.rows[0]) {
+      if (!product.rows[0]) {
         return res.status(404).send({ error: "Product not found." });
+      }
+
+      const products = await ProductModel.select(
+        "id, description, retail_price, wholesale_price, categories",
+      );
+
+      if (isUnique(products, "description", data.description)) {
+        return res
+          .status(409)
+          .send({ error: "This product is already registered." });
       }
 
       const categories = await CategoryModel.select("id, name");
